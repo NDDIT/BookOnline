@@ -1,0 +1,58 @@
+﻿@model IEnumerable<NguyenDuyDuong.SachOnline.Models.NHAXUATBAN>
+@using PagedList.Mvc;
+
+@{
+    ViewBag.Title = "Index NXB";
+    Layout = "~/Views/Shared/LayoutAdmin.cshtml";
+}
+
+<div style="margin-bottom: 15px;">
+    @Html.ActionLink("<< Về Trang quản tri", "Statistics")
+</div>
+
+<h2 style="text-align: center;">QUẢN LÝ NHÀ XUẤT BẢN</h2>
+
+<p>
+    @Html.ActionLink("THÊM MỚI", "CreateNXB")
+</p>
+<table class="table">
+    <tr>
+        <th>
+            Mã NXB
+        </th>
+        <th>
+            Tên NXB
+        </th>
+        <th>
+            Điện thoại
+        </th>
+        <th>
+            Địa chỉ
+        </th>
+        <th>
+            Tác vụ
+        </th>
+    </tr>
+
+    @foreach (var item in Model)
+    {
+        <tr>
+            <td>
+                @Html.DisplayFor(modelItem => item.MaNXB)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.TenNXB)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.DienThoai)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.DiaChi)
+            </td>
+            <td style="min-width: 132px;">
+                @Html.ActionLink("Sửa", "EditNXB", new { id = item.MaNXB }) |
+                @Html.ActionLink("Xóa", "DeleteNXB", new { id = item.MaNXB })
+            </td>
+        </tr>
+    }
+</table>

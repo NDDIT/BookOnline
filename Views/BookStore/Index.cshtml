@@ -1,0 +1,15 @@
+﻿@using NguyenDuyDuong.SachOnline.Models
+@using PagedList.Mvc;
+@model PagedList.PagedList<SACH>
+@{
+    ViewBag.Title = "Trang chủ";
+    Layout = "~/Views/Shared/LayoutUser.cshtml";
+}
+
+    <h2 class="text-center">SÁCH MỚI</h2>
+    <hr>
+        @Html.Action("SachMoiPartial","BookStore")
+    
+@section sachbannhieu{
+        @Html.Action("SachBanNhieuPartial","BookStore")
+    }

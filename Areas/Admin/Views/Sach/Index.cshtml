@@ -1,0 +1,352 @@
+﻿
+@{
+    ViewBag.Title = "Index";
+    Layout = "~/Views/Shared/LayoutAdmin.cshtml";
+}
+
+@section customStyles {
+    <style>
+        .item-img {
+            max-width: 100px;
+        }
+
+        .item-desc {
+            display: -webkit-box;
+            overflow: hidden;
+            -webkit-box-orient: vertical;
+            -webkit-line-clamp: 6;
+        }
+    </style>
+}
+
+@section Scripts {
+    <script>  
+        const ngayCapNhatInput = document.getElementById('txtNgayCapNhat');
+        const flatpickrOptions = {
+            dateFormat: "d/m/Y",
+            altInput: true, // Hiển thị ngày tháng tại input
+            altFormat: "d/m/Y",
+        };
+        
+        function extractDateFromJson(jsonDate) {
+            const regex = /\/Date\((\d+)\)\//;
+            const match = jsonDate.match(regex);
+            if (match) {
+                const unixTimestamp = parseInt(match[1]);
+                const date = new Date(unixTimestamp);
+                const day = date.getDate();
+                const month = date.getMonth() + 1; // Tháng trong JavaScript bắt đầu từ 0
+                const year = date.getFullYear();
+                return `${day}/${month}/${year}`;
+            }
+            return "Invalid Date";
+        }
+        
+        $(document).ready(function () {
+            loadDsSach();
+        });
+        $('#modalSach').on('hidden.bs.modal', function (e) {
+            // Xóa dữ liệu trong các input và textarea của modal
+            $('#txtTenSach').val('');
+            $('#txtMoTa').val('');
+            $('#txtSoLuong').val('');
+            $('#txtGiaBan').val('');
+            $('#txtTenCD').val('');
+            $('#txtTenNXB').val('');
+            $('#imgAnhBia').attr('src', '');
+            tinymce.get('txtMoTa').setContent('');
+
+            flatpickrInstance.setDate(null, false,  "d/m/Y");
+
+            // Ẩn modal
+            $(this).modal('hide');
+        });
+
+        function loadDsSach() {
+            $.ajax({
+                url: '/Admin/Sach/DsSach',
+                type: 'get',
+                success: function (data) {
+                    console.log(data);
+                    if (data.code == 200) {
+                        $('#tblDsSach').empty();
+                        $.each(data.dsSach, function (k, v) {
+                            $.ajax({
+                                url: '/Admin/Sach/TruncateSachDetails',
+                                type: 'get',
+                                data: { maSach: v.MaSach, maxTenSachLength: 25, maxMoTaLength: 25 },
+                                success: function (truncatedData) {
+                                    var truncatedTenSach = truncatedData.truncatedTenSach;
+                                    var truncatedMoTa = truncatedData.truncatedMoTa;
+                                    let s = '<tr id="' + v.MaSach + '">';
+                                    s += '<td>' + truncatedTenSach + '</td>';
+                                    s += '<td><span class="item-desc">' + truncatedMoTa + '</span></td>';
+                                    s += '<td><img src="/Images/' + v.Anh + '" class="img-rounded item-img" /></td>';
+                                    s += '<td>' + v.SoLuong + '</td>';
+                                    s += '<td>' + v.GiaBan + '</td>';
+                                    s += '<td>' + v.TenCD + '</td>';
+                                    s += '<td>' + v.TenNXB + '</td>';
+                                    s += '<td class="col-ms-3 text-right">';
+                                    s += '<button class="btn btn-sm btn-info" name="view"><i class="fa fa-info-circle" aria-hidden="true"></i></button>&nbsp';
+                                    s += '<button class="btn btn-sm btn-warning" name="update"><i class="fa fa-pen-square" aria-hidden="true"></i></button>&nbsp';
+                                    s += '<button class="btn btn-sm btn-danger" name="delete"><i class="fa fa-trash" aria-hidden="true"></i></button';
+                                    s += '</td>';
+                                    s += '</tr>';
+                                    $('#tblDsSach').append(s);
+                                }
+                            });
+                        })
+                    }
+                }
+            });
+        }
+
+        $(document).on('click', 'button[name="view"]', function () {
+            let idSach = $(this).closest('tr').attr('id');
+            $.ajax({
+                url: '/Admin/Sach/Details',
+                type: 'get',
+                data: {
+                    maSach: idSach
+                },
+                success: function (data) {
+                    //console.log(data)
+                    if (data.code == 200) {
+                        $('#imgAnhBia').attr('src', '/Images/' + data.sach.Anh);
+                        $('#txtTenSach').val(data.sach.TenSach);
+                        $('#txtTenSach').prop('readonly', true);
+                        tinymce.get('txtMoTa').setContent(data.sach.MoTa);
+                        $('#txtMoTa').prop('readonly', true);
+                        $('#txtSoLuong').val(data.sach.SoLuong);
+                        $('#txtSoLuong').prop('readonly', true);
+                        $('#txtGiaBan').val(data.sach.GiaBan);
+                        $('#txtGiaBan').prop('readonly', true);
+                        $('#txtTenCD').val(data.sach.TenCD);
+                        $('#txtTenCD').prop('readonly', true);
+                        $('#txtTenNXB').val(data.sach.TenNXB);
+                        $('#txtTenNXB').prop('readonly', true);
+                        $('#ldNgayCapNhat').show();
+                        // Khởi tạo Flatpickr và thiết lập định dạng ngày "d/m/Y"
+                        const ngayCapNhatI = ngayCapNhatInput;
+                        const flatpickrInstance = flatpickr(ngayCapNhatI, flatpickrOptions);
+                        const formattedDate = extractDateFromJson(data.sach.NgayCapNhat);
+                        
+                        flatpickrInstance.setDate(formattedDate, true, "d/m/Y");
+                        ngayCapNhatI.setAttribute('readonly', 'readonly');
+
+                        $('#btnSubmit').hide();
+                        $('#modalTitle').text('Xem chi tiết sách');
+                        $('#modalSach').modal();
+                    } else {
+                        alert(data.msg);
+                    }
+                }
+            });
+        });
+
+        $('#btnAdd').click(function () {
+            $('#modalTitle').text('Thêm mới sách');
+            $('#maSach').val('0');
+            $('#txtTenSach').val('');
+            $('#txtTenSach').prop('readonly', false);
+            $('#txtMoTa').val('');
+            $('#txtMoTa').prop('readonly', false);
+            $('#txtSoLuong').val('');
+            $('#txtSoLuong').prop('readonly', false);
+            $('#txtGiaBan').val('');
+            $('#txtGiaBan').prop('readonly', false);
+            $('#txtTenCD').val('');
+            $('#txtTenCD').prop('readonly', false);
+            $('#txtTenNXB').val('');
+            $('#txtTenNXB').prop('readonly', false);
+            $('#btnSubmit').show();
+            $('#modalSach').modal();
+        })
+
+        $(document).on('click', 'button[name="update"]', function () {
+            let idSach = $(this).closest('tr').attr('id');
+            $.ajax({
+                url: '/Admin/Sach/Details',
+                type: 'get',
+                data: {
+                    maSach: idSach
+                },
+                success: function (data) {
+                    if (data.code == 200) {
+                        $('#imgAnhBia').attr('src', '/Images/' + data.sach.Anh);
+                        $('#txtTenSach').val(data.sach.TenSach);
+                        $('#txtTenSach').prop('readonly', false);
+                        tinymce.get('txtMoTa').setContent(data.sach.MoTa);
+                        $('#txtMoTa').prop('readonly', false);
+                        $('#txtSoLuong').val(data.sach.SoLuong);
+                        $('#txtSoLuong').prop('readonly', false);
+                        $('#txtGiaBan').val(data.sach.GiaBan);
+                        $('#txtGiaBan').prop('readonly', false);
+                        $('#txtTenCD').val(data.sach.TenCD);
+                        $('#txtTenCD').prop('readonly', false);
+                        $('#txtTenNXB').val(data.sach.TenNXB);
+                        $('#txtTenNXB').prop('readonly', false);
+                        $('#txtNgayCapNhat').hide();
+                        $('#ldNgayCapNhat').hide();
+                        $('#btnSubmit').show();
+                        $('#modalTitle').text('Cập nhật sách');
+                        $('#maSach').val(idSach)
+                        $('#modalSach').modal();
+                    } else {
+                        alert(data.msg);
+                    }
+                }
+            });
+        });
+
+        $(document).on('click', 'button[name="delete"]', function () {
+            let idSach = $(this).closest('tr').attr('id');
+            if (confirm('Xác nhận xoá sách này')) {
+                $.ajax({
+                    url: '/Admin/Sach/Delete',
+                    type: 'post',
+                    data: {
+                        maSach: idSach
+                    },
+                    success: function (data) {
+                        if (data.code == 200) {
+                            alert(data.msg);
+                            loadDsSach();
+                        } else {
+                            alert(data.msg);
+                        }
+                    }
+                });
+            }
+        });
+
+        $('#btnSubmit').click(function () {
+            let strTenSach = $('#txtTenSach').val();
+            if (strTenSach.length == 0) {
+                alert('Vui lòng nhập tên sách');
+                return;
+            }
+            let moTa = $('#txtMoTa').val();
+            let SoLuong = $('#txtSoLuong').val();
+            let GiaBan = $('#txtGiaBan').val();
+            let TenCD = $('txtTenCD').val();
+            let TenNXB = $('txtTenNXB').val();
+
+
+            let maSach = $('#maSach').val();
+            if (maSach == 0) {
+                $.ajax({
+                    url: '/Admin/Sach/Create',
+                    type: 'post',
+                    data: {
+                        strTenCD: strTenSach
+                    },
+                    success: function (data) {
+                        if (data.code == 200) {
+                            alert(data.msg);
+                            $('#modalSach').modal('hide');
+                            loadDsSach();
+                            $('#txtTenSach').val('');
+                        } else {
+                            alert(data.msg);
+                        }
+                    }
+                });
+            }
+            else {
+                $.ajax({
+                    url: '/Admin/Sach/Edit',
+                    type: 'post',
+                    data: {
+                        maSach: maSach,
+                        tenSach: tenSach,
+                        moTa: moTa,
+                        SoLuong:SoLuong, 
+                    },
+                    success: function (data) {
+                        if (data.code == 200) {
+                            alert(data.msg);
+                            $('#modalSach').modal('hide');
+                            loadDsSach();
+                        } else {
+                            alert(data.msg);
+                        }
+                    }
+                });
+            }
+        });
+        
+        
+
+
+    </script>
+}
+
+<p>
+    <button class="btn btn-success" id="btnAdd">
+        <i class="fa fa-plus" aria-hidden="true"></i> Thêm sách
+    </button>
+</p>
+<table class="table">
+    <thead>
+        <tr>
+            <th>Tên sách</th>
+            <th>Mô tả</th>
+            <th>Ảnh</th>
+            <th>Số lượng</th>
+            <th>Giá bán</th>
+            <th>Tên chủ đề</th>
+            <th>Tên nhà xuất bản</th>
+            <th class="col-sm-2 text-right">Các chức năng</th>
+        </tr>
+    </thead>
+    <tbody id="tblDsSach"></tbody>
+</table>
+
+<div class="modal fade" id="modalSach" tabindex="-1" role="dialog" aria-labelledby="exampleModalCenterTitle" aria-hidden="true">
+    <div class="modal-dialog modal-dialog-centered" role="document">
+        <div class="modal-content">
+            <div class="panel panel-primary">
+                <div class="modal-header text-center" id="modalTitle"></div>
+                <div class="modal-body text-center">
+                    <div class="form-group">
+                        <input type="text" id="maSach" value="" hidden />
+                        <label>Ảnh bìa</label>
+                        <div class="modal-body d-flex flex-column align-items-center">
+                            <img id="imgAnhBia" class="img-rounded item-img " />
+                        </div>
+                        <label>Tên sách</label>
+                        <input type="text" class="form-control  text-center" id="txtTenSach" placeholder="Tên sách" />
+                        <label>Mô tả</label>
+                        <textarea id="txtMoTa"></textarea>
+                        <label>Số lượng</label>
+                        <input type="number" class="form-control  text-center" id="txtSoLuong" />
+                        <label>Giá bán</label>
+                        <input type="number" class="form-control  text-center" id="txtGiaBan" />
+
+                        <div class="col-md-10 ">
+                            <label>Tên chủ đề: </label>
+                            @*Hiển thị ViewBag.MaCD vào dropdownlist*@
+                            @Html.DropDownList("MaCD")
+                        </div>
+                        <input type="text" class="form-control  text-center" id="txtTenCD" placeholder="Tên chủ đề" />
+                        <div class="col-md-10">
+                            <label>Tên nhà xuất bản: </label>
+                            @*Hiển thị ViewBag.MaCD vào dropdownlist*@
+                            @Html.DropDownList("MaNXB")
+                        </div>
+                        
+                        <input type="text" class="form-control  text-center" id="txtTenNXB" placeholder="Tên nhà xuất bản" />
+
+                        <label id="ldNgayCapNhat">Ngày cập nhật</label>
+                        <input class="form-control  text-center" id="txtNgayCapNhat" />
+                    </div>
+                    </div>
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-default pull-right" data-dismiss="modal">Đóng</button>
+                <button type="button" class="btn btn-primary pull-right" id="btnSubmit">Lưu</button>
+            </div>
+        </div>
+    </div>
+</div>

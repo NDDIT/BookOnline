@@ -1,0 +1,42 @@
+﻿
+
+@model IEnumerable<NguyenDuyDuong.SachOnline.Models.MENU>
+<ul>
+    @{
+        int i = 0;
+        foreach (var item in Model)
+        {
+            if (ViewBag.lst[i] != 0)
+            {
+
+        <li class="dropdown">
+            @item.MenuName <span class="caret"></span>
+            @Html.ActionLink("Sửa", "EditMenus", new { id = item.id }, new { @class = "btn-edit" }) |
+            @Html.ActionLink("Xóa", "DeleteMenus", new { id = item.id }, new { @class = "btn-delete" })
+
+            <hr />
+            @Html.Action("ChildMenuPartial", "Admin", new { parentid = item.id })
+        </li>
+
+            }
+            else
+            {
+<li>
+    @item.MenuName
+    @Html.ActionLink("Sửa", "EditMenus", new { id = item.id }, new { @class = "btn-edit" }) |
+    @Html.ActionLink("Xóa", "DeleteMenus", new { id = item.id }, new { @class = "btn-delete" })
+
+    <hr />
+</li>
+            }
+            i++;
+
+        }
+
+
+    }
+</ul>
+
+
+
+

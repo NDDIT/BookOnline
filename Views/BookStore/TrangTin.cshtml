@@ -1,0 +1,23 @@
+﻿
+@model NguyenDuyDuong.SachOnline.Models.TRANGTIN
+
+@{
+    ViewBag.Title = "TrangTin";
+    Layout = "~/Views/Shared/LayoutUser.cshtml";
+}
+
+<h3>@Model.TenTrang</h3>
+<h4>Ngày đăng: @Model.NgayTao.Value.ToString("dd/MM/yyyy")</h4>
+
+<hr />
+
+<div>
+    @Html.Raw(Model.NoiDung)
+</div>
+
+<br />
+<br />
+
+<p>
+    @Html.ActionLink("Back to List", "Index")
+</p>

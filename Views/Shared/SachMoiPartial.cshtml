@@ -1,0 +1,67 @@
+﻿
+<link href="~/Content/Styles.css" rel="stylesheet" />
+@using NguyenDuyDuong.SachOnline.Models
+@using PagedList.Mvc;
+@model PagedList.PagedList<SACH>
+
+
+    <div class="row text-center">
+
+        @{
+            int i = 0;
+        }
+        @foreach (var sach in Model)
+        {
+            i++;
+            <div class="col-lg-4 col-md-6 col-sm-6 col-xs-12
+            @if (i%3 == 0)
+                {
+                    @: hidden-sm
+
+                }
+
+             " id="item">
+                <div class="thumbnail">
+                    <div class="img-book" style="min-height: 270px;">
+                        <a href="@Url.Action("Details", "BookStore", new { id = sach.MaSach })">
+                            <img alt="@sach.TenSach" src="~/Images/@sach.AnhBia" width="200" height="267" />
+                        </a>
+                    </div>
+                    <div class="caption" style="height: 120px;">
+                        <br />
+                        <h4 style="height: 38px; white-space: normal; display: -webkit-box; -webkit-box-orient: vertical; -webkit-line-clamp: 2; word-wrap: break-word; overflow: hidden; text-overflow: ellipsis;">
+                            @sach.TenSach
+                        </h4>
+                        <p></p>
+                    </div>
+                    <a href="@Url.Action("ThemGiohang","Giohang",new { iMasach = sach.MaSach, strURL = Request.Url.AbsoluteUri })" class="btn btn-primary" role="button">
+                        <span class="glyphicon glyphicon-shopping-cart"></span> Add to Cart
+
+                    </a>
+                    <div class="ratings">
+                        <p class="pull-right">15 reviews</p>
+                        <p>
+                            <span class="glyphicon glyphicon-star"></span>
+                            <span class="glyphicon glyphicon-star"></span>
+                            <span class="glyphicon glyphicon-star"></span>
+                            <span class="glyphicon glyphicon-star"></span>
+                            <span class="glyphicon glyphicon-star-empty"></span>
+                        </p>
+                    </div>
+                </div>
+            </div>
+        }
+    </div>
+    <nav class="text-center">
+        @* Tao lien ket trang*@
+        Trang @(Model.PageCount<Model.PageNumber?0:Model.PageNumber)/@Model.PageCount;
+        <div class="MenuTrang">
+            @Html.PagedListPager(Model, page => Url.Action("Index", new { page = page }))
+        </div>
+        <style>
+            .MenuTrang li {
+                display: inline;
+            }
+        </style>
+
+    </nav>

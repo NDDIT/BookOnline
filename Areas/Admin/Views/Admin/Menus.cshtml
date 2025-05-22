@@ -1,0 +1,76 @@
+﻿@using NguyenDuyDuong.SachOnline.Controllers
+@model IEnumerable<NguyenDuyDuong.SachOnline.Models.MENU>
+@using NguyenDuyDuong.SachOnline.Models;
+@{
+    ViewBag.Title = "Menus";
+    Layout = "~/Views/Shared/LayoutAdmin.cshtml";
+}
+
+<h2 style="text-align:center">Menus</h2>
+
+<p>
+    @Html.ActionLink("THÊM MỚI", "CreateMenus", null, new { @class = "btn-add" })
+</p>
+<ul>
+    @{
+        int i = 0;
+        foreach (var item in Model)
+        {
+            if (ViewBag.lst[i] != 0)
+            {
+
+        <li class="dropdown">
+            @item.MenuName <span class="caret"></span>
+            @Html.ActionLink("Sửa", "EditMenus", new { id = item.id }, new { @class = "btn-edit" }) |
+            @Html.ActionLink("Xóa", "DeleteMenus", new { id = item.id }, new { @class = "btn-delete" })
+
+            <hr />
+            @Html.Action("ChildMenuPartial", "Admin", new { parentid = item.id })
+        </li>
+
+            }
+            else
+            {
+<li>
+    @item.MenuName
+    @Html.ActionLink("Sửa", "EditMenus", new { id = item.id }, new { @class = "btn-edit" }) |
+    @Html.ActionLink("Xóa", "DeleteMenus", new { id = item.id }, new { @class = "btn-delete" })
+
+    <hr />
+</li>
+
+            }
+            i++;
+
+        }
+
+
+    }
+</ul>
+<style>
+    .dropdown-submenu {
+        position: relative;
+    }
+
+        .dropdown-submenu .dropdown-menu {
+            top: 0;
+            left: 100%;
+            margin-top: -1px;
+        }
+    .btn-add {
+        background-color: #007bff;
+        color: #fff;
+        text-decoration: none;
+        padding: 10px 20px;
+        border-radius: 5px;
+    }
+</style>
+<script>
+    $(document).ready(function () {
+        $('.dropdown-submenu a.test').on("click", function (e) {
+            $(this).next('ul').toggle();
+            e.stopPropagation();
+            e.preventDefault();
+        });
+    });
+</script>

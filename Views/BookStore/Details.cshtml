@@ -1,0 +1,42 @@
+﻿<style type="text/css">
+    #Datmua a {
+        clear: both;
+        background-color: red;
+        color: white;
+        width: 120px;
+        height: 35px;
+        display: block;
+        float: right;
+        text-align: center;
+        padding-top: 10px;
+        text-decoration: none;
+        font-weight: bold;
+    }
+    #Datmua a:hover{
+        background-color: gray;
+        color: red;
+    }
+</style>
+@{
+    ViewBag.Title = "Details";
+    Layout = "~/Views/Shared/LayoutUser.cshtml";
+}
+
+<h2>THÔNG TIN CHI TIẾT SÁCH</h2>
+<hr />
+<div>
+    <div style="width:40%; float:left; border-left:dotted 1px; border-color: azure  ">
+        <img src="~/Images/@Model.AnhBia" style="width:100%" />
+    </div>
+    <div style="width:60%; float: left; padding: 10px">
+        <h4 style="font-weight: bold; color:red ">Ten sach: @Model.TenSach</h4>
+        <p style="text-align:justify"><span style="font-weight:bold">Mô tả:</span> @Html.Raw(@Model.MoTa.ToString().Replace("\n", "</p><p>&nbsp&nbsp&nbsp&nbsp&nbsp"))</p>
+        <p style="font-weight:bold">Giá bán: <span style="color:red; font-size:16px">@Model.GiaBan VND</span></p>
+    </div>
+    <div>
+        <div id="Datmua">
+            <a href="@Url.Action("ThemGiohang","Giohang",new { iMasach = @Model.MaSach, strURL = Request.Url.AbsoluteUri })" class="list-group-item">Thêm giỏ hàng</a>
+        </div>
+    </div>
+</div>
+

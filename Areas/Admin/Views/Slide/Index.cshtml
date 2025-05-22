@@ -1,0 +1,89 @@
+﻿@model IEnumerable<NguyenDuyDuong.SachOnline.Models.SLIDE>
+
+@{
+    ViewBag.Title = "Quản lý slide";
+    Layout = "~/Views/Shared/LayoutAdmin.cshtml";
+}
+
+@section customStyles {
+    @Styles.Render("~/Content/datatables")
+    <style>
+        .img-col {
+            max-width: 100px;
+        }
+
+        .mgt {
+            margin-top: 16px;
+        }
+    </style>
+}
+
+@section Scripts {
+    @Scripts.Render("~/bundles/datatables")
+    <script>
+    $(document).ready(function () {
+            $('#dataTable').DataTable();
+    });
+    function onDeleteComplete(result) {
+            if (result) {
+                // Deletion successful
+                alert('Slide deleted successfully.'); // Optional
+            } else {
+                // Deletion failed
+                alert('Failed to delete slide.'); // Optional
+            }
+     }
+    </script>
+}
+
+<h2>Quản lý slide</h2>
+
+<div class="mgt">
+    <a href="/Admin/Slide/Create" class="btn btn-primary">Thêm mới</a>
+</div>
+<div class="table-responsive mgt">
+    <table class="table table-bordered" id="dataTable" width="100%" cellspacing="0">
+        <thead>
+            <tr>
+                <th>Tiêu đề</th>
+                <th>Ảnh</th>
+                <th>Mô tả</th>
+                <th>Hiển thị</th>
+                <th></th>
+            </tr>
+        </thead>
+        <tfoot>
+            <tr>
+                <th>Tiêu đề</th>
+                <th>Ảnh</th>
+                <th>Mô tả</th>
+                <th>Hiển thị</th>
+                <th></th>
+            </tr>
+        </tfoot>
+        <tbody>
+            @foreach (var item in Model)
+            {
+                <tr id="row_@item.Id">
+                    <td>@item.TieuDe</td>
+                    <td class="img-col">
+                        <img src="@item.Anh"  alt="Ảnh sản phẩm" class="img-responsive img-rounded" />
+                    </td>
+                    <td>@item.MoTa</td>
+                    <td>@item.HienThi</td>
+                    <td>
+                        <a href="~/Admin/Slide/Edit/@item.Id" class="btn btn-warning">
+                            Cập nhật
+                        </a> |
+                        @Ajax.ActionLink("Xoá", "Delete", new { @id = item.Id }, new AjaxOptions
+                        {
+                            Confirm = "Xác nhận xoá slide",
+                            OnComplete = "onDeleteComplete",
+                            HttpMethod = "Delete"
+                        }, new { @class = "btn btn-danger", onclick = "return confirm('Xác nhận xoá slide');" })
+                    </td>
+                </tr>
+            }
+        </tbody>
+    </table>
+</div>

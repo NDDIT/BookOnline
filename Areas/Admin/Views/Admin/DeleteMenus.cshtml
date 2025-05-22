@@ -1,0 +1,60 @@
+﻿@model NguyenDuyDuong.SachOnline.Models.MENU
+
+@{
+    ViewBag.Title = "Delete Menu";
+    Layout = "~/Views/Shared/LayoutAdmin.cshtml";
+}
+<div style="margin-bottom: 15px;">
+    @Html.ActionLink("<< Về Trang quản trị", "Menus")
+</div>
+<div style="margin-right: 30px;">
+    <h2 style="text-align: center">XÁC NHẬN THÔNG TIN SÁCH CẦN XÓA</h2>
+    <div>
+        <hr />
+        <dl class="dl-horizontal">
+            <dt>
+                Tên Menu
+            </dt>
+
+            <dd>
+                @Html.DisplayFor(model => model.MenuName)
+            </dd>
+
+            <dt>
+                ParentId
+            </dt>
+
+            <dd>
+                @Html.DisplayFor(model => model.ParentId)
+            </dd>
+
+            <dt>
+                Order Number
+            </dt>
+
+            <dd>
+                @Html.DisplayFor(model => model.OrderNumber)
+            </dd>
+
+            <dt>
+                Link
+            </dt>
+
+            <dd>
+                @Html.DisplayFor(model => model.MenuLink)
+            </dd>
+
+        </dl>
+
+        @using (Html.BeginForm("ConfirmDeleteMenus/" + Model.id, "Admin", FormMethod.Post))
+        {
+            @Html.AntiForgeryToken()
+
+            <div class="form-actions no-color" style="display: flex; justify-content: center; align-items: center;">
+                <input type="submit" value="Xóa" class="btn btn-danger" style="margin-right: 14px;" />
+                @Html.ActionLink("Trở về", "Menus")
+            </div>
+        }
+    </div>
+
+</div>

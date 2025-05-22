@@ -1,0 +1,52 @@
+﻿@using NguyenDuyDuong.SachOnline.Models
+<link href="~/Content/Styles.css" rel="stylesheet" />
+
+<div class="container">
+
+    <h2 class="text-center">SÁCH BÁN NHIỀU</h2>
+
+    <div class="row">
+        @for (int i = 0; i < Model.Count; i += 2)
+        {
+            <div class="col-lg-6 col-md-6">
+                <div class="media-object-default">
+                    <div class="media">
+                        <div class="media-left">
+                            <a href="@Url.Action("Details", "BookStore", new { id = @Model[i].MaSach})" class="img-book">
+                                <img class="media-object imgsachbannhieu" src="~/Images/@Model[i].AnhBia" alt="placeholder image">
+                            </a>
+                        </div>
+                        <div class="media-body">
+                            <h4 class="media-heading">@Model[i].TenSach</h4>
+                            <p style="height: 57px;white-space:normal;display: -webkit-box; -webkit-box-orient: vertical;-webkit-line-clamp: 3; word-wrap: break-word;overflow: hidden; text-overflow: ellipsis;"> @Model[i].MoTa</p>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            if (i + 1 < Model.Count)
+            {
+                <div class="col-lg-6 col-md-6">
+                    <div class="media-object-default">
+                        <div class="media">
+                            <div class="media-left">
+                                <a href="@Url.Action("Details", "BookStore", new { id = @Model[i].MaSach})" class="img-book">
+                                    <img class="media-object imgsachbannhieu" src="~/Images/@Model[i + 1].AnhBia" alt="placeholder image">
+                                </a>
+                            </div>
+                            <div class="media-body">
+                                <h4 class="media-heading">@Model[i + 1].TenSach</h4>
+
+                                <p style="height: 57px;white-space:normal;display: -webkit-box; -webkit-box-orient: vertical;-webkit-line-clamp: 3; word-wrap: break-word;overflow: hidden; text-overflow: ellipsis;"> @Model[i + 1].MoTa</p>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            }
+        }
+    </div>
+
+
+    <!-- row-->
+    <hr>
+</div>

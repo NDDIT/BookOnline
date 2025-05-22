@@ -1,0 +1,86 @@
+﻿<!DOCTYPE html>
+
+<html>
+<head>
+    <meta charset="utf-8" name="viewport" content="width=device-width, initial-scale=1">
+    <title>@ViewBag.Title</title>
+
+    <!-- Latest compiled and minified CSS -->
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.4.1/css/bootstrap.min.css">
+    <!-- jQuery library -->
+    <script src="~/Content/jquery-1.11.3.min.js"></script>
+    <!-- Latest compiled JavaScript -->
+    <script src="~/Content/bootstrap.js"></script>
+
+
+
+    <style type="text/css">
+        .imgbook {
+            transition: all 1s ease-in;
+            width: 400px;
+        }
+
+            .imgbook:hover {
+                transform: scale(0.9);
+                cursor: pointer;
+            }
+
+        .imgsachbannhieu {
+            width: 100px;
+        }
+        .btn-edit {
+            background-color: orange;
+            color: white;
+            border: none;
+            padding: 5px 10px;
+            border-radius: 5px;
+        }
+
+        /* Định dạng nút "Delete" (màu đỏ) */
+        .btn-delete {
+            background-color: red;
+            color: white;
+            border: none;
+            padding: 5px 10px;
+            border-radius: 5px;
+        }
+    </style>
+
+
+</head>
+<body>
+    @Html.Action("NavPartial","BookStore")
+    <div class="container">
+        <div class="row">
+            @Html.Action("SlidePartial","BookStore")
+
+        </div>
+        <hr>
+    </div>
+    <!-- /.container-->
+    <div class="container">
+        <div class="row">
+            <div class="col-lg-3 col-md-3 col-sm-3 col-xs-12">
+
+                @Html.Action("ChuDePartial","BookStore")
+                <br>
+
+                @Html.Action("NhaXuatBanPartial","BookStore")
+
+            </div>
+            <div class="col-lg-9 col-md-9 col-sm-9 col-xs-12">
+                @RenderBody()
+            </div>
+        </div>
+        <hr>
+    </div>
+    <!-- /.container-->
+    @RenderSection("sachbannhieu",required: false)
+    <!-- /.container-->
+    <footer class="container well" align="center">
+        <p>©2021 - Nhà sách ABC. Allright Reserved</p>
+        <p>Website được phát triển để sử dụng làm bài tập thực hành môn Lập trình Web</p>
+        <p>Email: abc@gmail.com</p>
+    </footer>
+</body>
+</html>

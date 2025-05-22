@@ -1,0 +1,78 @@
+﻿@model PagedList.PagedList<NguyenDuyDuong.SachOnline.Models.TRANGTIN>
+@using PagedList.Mvc;
+
+@helper Truncate(string input, int length)
+{
+    if (input.Length < length)
+    {
+        @input
+    }
+    else
+    {
+        @input.Substring(0, length)<text>...</text>
+    }
+}
+@{
+    ViewBag.Title = "News";
+    Layout = "~/Views/Shared/LayoutAdmin.cshtml";
+}
+
+<h2 style="text-align:center">News</h2>
+
+<p>
+    @Html.ActionLink("THÊM MỚI", "CreateNews")
+</p>
+<table class="table">
+    <tr>
+        <th style="width: 150px;">
+            Tên trang
+        </th>
+        <th style="width: 300px;">
+            Nội dung
+        </th>
+        <th style="width: 150px;">
+            Ngày tạo
+        </th>
+        <th style="width: 300px;">
+            Link
+        </th>
+
+    </tr>
+
+    @foreach (var item in Model)
+    {
+        <tr>
+            <td>
+
+                @Truncate(item.TenTrang, 50)
+            </td>
+            <td>
+                @Truncate(item.NoiDung, 50)
+            </td>
+
+            <td>
+                @Html.DisplayFor(modelItem => item.NgayTao)
+
+            </td>
+            <td>
+                @Truncate(item.MetaTitle, 50)
+            </td>
+
+            <td style="min-width: 132px;">
+                @Html.ActionLink("Sửa", "EditNews", new { id = item.MaTT }) |
+                @Html.ActionLink("Xóa", "DeleteNews", new { id = item.MaTT })
+            </td>
+        </tr>
+    }
+</table>
+
+<!-- Hiển thị menu phân trang -->
+<div class="MenuTrang center-block">
+    @Html.PagedListPager(Model, page => Url.Action("News", new { page = page }))
+</div>
+
+<style>
+    .MenuTrang li {
+        display: inline;
+    }
+</style>

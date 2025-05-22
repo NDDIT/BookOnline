@@ -1,0 +1,132 @@
+﻿@using NguyenDuyDuong.SachOnline.Models
+@model List<Giohang>
+@{
+    ViewBag.Title = "Dat Hang";
+    Layout = "~/Views/Shared/LayoutUser.cshtml";
+}
+
+
+<h2 style="text-align:center">THÔNG TIN HÀNG HÓA</h2>
+<table align="center" border="1">
+    <tr style="text-align:center; font-weight:bold">
+        <td>Mã sách</td>
+        <td>Tên sách</td>
+        <td>Ảnh bìa</td>
+        <td>Số lượng</td>
+        <td>Đơn giá</td>
+        <td>Thành tiền</td>
+    </tr>
+
+    @foreach (var item in Model)
+    {
+        <tr style="text-align:center; font-weight:bold">
+            <td>@item.iMasach</td>
+            <td>@item.sTensach</td>
+            <td><img src="~/Images/@item.sAnhbia" alt="Ảnh bìa" /></td>
+
+            <td>
+                @using (Html.BeginForm("CapnhatGiohang", "Giohang", new { @iMaSp = item.iMasach }))
+                {
+                <td>
+                    @item.iSoluong
+                </td>
+                <td>@String.Format("{0:0,0}", item.dDongia) </td>
+                <td>@String.Format("{0:0,0}", item.dThanhtien) </td>
+            }
+            </tr>
+
+        }
+
+    <tr style="font-weight:bold; text-align:right; color:red">
+        <td colspan="3">Số lượng sách: @ViewBag.Tongsoluong</td>
+        <td colspan="3">Tổng tiền: @string.Format("{0:0,0} VND", ViewBag.Tongtien) VND</td>
+    </tr>
+    <tr style="text-align:right;color:blue; font-weight:bold;">
+        <td colspan="6">
+            @Html.ActionLink("TRỞ VỀ GIỎ HÀNG", "Giohang", "GioHang")
+        </td>
+    </tr>
+</table>
+
+<h2 style="text-align:center">THÔNG TIN XÁC NHẬN</h2>
+@{
+    KHACHHANG kh = (KHACHHANG)Session["Taikhoan"];
+}
+
+<table align="center">
+    @using (Html.BeginForm())
+    {
+        @Html.ValidationSummary(true)
+
+        <tr style="height:40px">
+            <td>Mã tên khách hàng:</td>
+            <td style="font-weight:bold">@kh.HoTen</td>
+        </tr>
+
+        <tr style="height:40px">
+            <td>Địa chỉ:</td>
+            <td style="font-weight:bold">@kh.DiaChi</td>
+        </tr>
+
+        <tr style="height:40px">
+            <td>Số điện thoại:</td>
+            <td style="font-weight:bold">@kh.DienThoai</td>
+        </tr>
+
+        <tr style="height:40px">
+            <td>Ngày đặt:</td>
+            <td style="font-weight:bold">@DateTime.Now.ToShortDateString()</td>
+        </tr>
+
+        <tr style="height:40px">
+            <td>Ngày giao:</td>
+            <td style="font-weight:bold">
+                <input type="date" name="Ngaygiao" />
+            </td>
+        </tr>
+
+        <tr style="height:40px">
+            <td></td>
+            <td>
+                <input type="submit" value="Đăng mua hàng" />
+            </td>
+        </tr>
+        <tr style="height:40px;">
+            <td></td>
+            <td>
+                <br />
+                <a href="@Url.Action("Payment", "GioHang")" class="btn btn-primary">Thanh toán qua Momo</a>
+                <br />
+                <br />
+                <input type="submit" value="Thanh toán bằng tiền mặt" class="btn btn-secondary" />
+            </td>
+        </tr>
+    }
+</table>
+<script>
+    document.addEventListener('DOMContentLoaded', function () {
+        // Lấy ngày hiện tại
+        var today = new Date();
+
+        // Định dạng ngày theo YYYY-MM-DD để đặt giá trị min
+        var formattedToday = today.toISOString().split('T')[0];
+
+        // Tìm tất cả các ô input có tên là 'Ngaygiao'
+        var ngayGiaoInputs = document.querySelectorAll('input[name="Ngaygiao"]');
+
+        // Đặt giới hạn dưới (min) cho từng ô input
+        ngayGiaoInputs.forEach(function (ngayGiaoInput) {
+            ngayGiaoInput.min = formattedToday;
+        });
+    });
+</script>
+
+
+
+
+
+
+
+
+
+

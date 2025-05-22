@@ -1,0 +1,110 @@
+﻿@model NguyenDuyDuong.SachOnline.Models.SACH
+
+@{
+    ViewBag.Title = "Edit";
+    Layout = "~/Views/Shared/LayoutAdmin.cshtml";
+}
+<link href="https://cdn.jsdelivr.net/npm/bootstrap@5.0.2/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-EVSTQN3/azprG1Anm3QDgpJLIm9Nao0Yz1ztcQTwFspd3yD65VohhpuuCOmLASjC" crossorigin="anonymous">
+
+<style>
+    .form-group {
+        display: flex;
+        align-items: center;
+        justify-content: center;
+    }
+</style>
+<div style="margin-bottom: 15px;">
+    @Html.ActionLink("<< Về Trang quản trị", "BookManagement")
+</div>
+<div style="margin-right: 60px">
+    <h2 style="text-align: center">ĐIỀU CHỈNH THÔNG TIN SÁCH</h2>
+
+    @using (Html.BeginForm("Edit", "Admin", FormMethod.Post, new { @enctype = "multipart/form-data" }))
+    {
+        @Html.AntiForgeryToken()
+
+        <div class="form-horizontal">
+            <hr />
+            @Html.ValidationSummary(true)
+            @Html.HiddenFor(model => model.MaSach)
+
+            <div class="form-group">
+                <label class="control-label col-md-2">Mã sách</label>
+                <div class="col-md-10">
+                    <div style="font: 10px; padding: 5px 0 0 5px;">
+                        @Model.MaSach
+                    </div>
+                </div>
+            </div>
+            <div class="form-group">
+                <label class="control-label col-md-2">Tên sách</label>
+                <div class="col-md-10">
+                    @Html.EditorFor(model => model.TenSach, new { htmlAttributes = new { @class = "form-control" } })
+                    @Html.ValidationMessageFor(model => model.TenSach, "", new { @class = "text-danger" })
+                </div>
+            </div>
+
+            <div class="form-group">
+                <label class="control-label col-md-2">Mô tả</label>
+                <div class="col-md-10">
+                    <textarea name="Mota">@Model.MoTa</textarea>
+                </div>
+            </div>
+
+            <div class="form-group">
+                <label class="control-label col-md-2">Ảnh bìa</label>
+                <div class="col-md-10">
+                    Chọn ảnh mới
+                    <input style="margin-top: 10px; margin-bottom: 10px;" type="file" name="fileUpload" />
+                    <img style="width: 100%;" src="@Url.Content("~/Images/" + Model.AnhBia)" />
+                    @ViewBag.Thongbao
+                </div>
+            </div>
+
+            <div class="form-group">
+                <label class="control-label col-md-2">Ngày cập nhật</label>
+                <div class="col-md-10">
+                    <input type="date" name="Ngaycapnhat" />
+                    @Html.ValidationMessageFor(model => model.NgayCapNhat, "", new { @class = "text-danger" })
+                </div>
+            </div>
+
+            <div class="form-group">
+                <label class="control-label col-md-2">Số lượng bán</label>
+                <div class="col-md-10">
+                    @Html.EditorFor(model => model.SoLuongBan, new { htmlAttributes = new { @class = "form-control" } })
+                    @Html.ValidationMessageFor(model => model.SoLuongBan, "", new { @class = "text-danger" })
+                </div>
+            </div>
+
+            <div class="form-group">
+                <label class="control-label col-md-2">Giá bán</label>
+                <div class="col-md-10">
+                    @Html.EditorFor(model => model.GiaBan, new { htmlAttributes = new { @class = "form-control" } })
+                    @Html.ValidationMessageFor(model => model.GiaBan, "", new { @class = "text-danger" })
+                </div>
+            </div>
+
+            <div class="form-group">
+                <label class="control-label col-md-2">Mã chủ đề</label>
+                <div class="col-md-10">
+                    @Html.DropDownList("MaCD", null, new { @class = "form-select" })
+                </div>
+            </div>
+
+            <div class="form-group">
+                <label class="control-label col-md-2">Mã NXB</label>
+                <div class="col-md-10">
+                    @Html.DropDownList("MaNXB", null, new { @class = "form-select" })
+                </div>
+            </div>
+
+            <div class="form-group">
+                <div class="col-md-offset-2 col-md-10">
+                    <input style="margin-right: 20px;" type="submit" value="Lưu lại" class="btn btn-success" />
+                    @Html.ActionLink("Quay về", "Index", new { @class = "btn btn-success" })
+                </div>
+            </div>
+        </div>
+    }
+</div>

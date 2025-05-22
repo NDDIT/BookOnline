@@ -1,0 +1,101 @@
+﻿@model PagedList.PagedList<NguyenDuyDuong.SachOnline.Models.SACH>
+@using PagedList.Mvc;
+
+@helper Truncate(string input, int length)
+{
+    if (input.Length < length)
+    {
+        @input
+    }
+    else
+    {
+        @input.Substring(0, length)<text>...</text>
+    }
+}
+@{
+    ViewBag.Title = "Book Management";
+    Layout = "~/Views/Shared/LayoutAdmin.cshtml";
+}
+
+<h2 style="text-align:center">QUẢN LÝ THÔNG TIN SÁCH</h2>
+
+<p>
+    @Html.ActionLink("THÊM MỚI", "Create")
+</p>
+<table class="table">
+    <tr>
+        <th style="width: 150px;">
+            Tên sách
+        </th>
+        <th style="width: 300px;">
+            Mô tả
+        </th>
+        <th style="width: 150px; height:100px">
+            Ảnh bìa
+        </th>
+        <th style="width: 150px;">
+            Ngày cập nhật
+        </th>
+        <th style="width: 40px;">
+            Số lượng
+        </th>
+        <th style="width: 40px;">
+            Giá
+        </th>
+        <th style="width: 40px;">
+            Mã chủ đề
+        </th>
+        <th>
+            MÃ NXB
+        </th>
+    </tr>
+
+    @foreach (var item in Model)
+    {
+        <tr>
+            <td>
+                
+                @Truncate(item.TenSach, 20)
+            </td>
+            <td>
+                @Truncate(item.MoTa, 20)
+            </td>
+            <td>
+                <img style="border-radius: unset !important; width: 40px; height: 60px;" src="@(Url.Content("~/Images/") + item.AnhBia)" />
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.NgayCapNhat)
+                
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.SoLuongBan)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.GiaBan)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.MaCD)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.MaNXB)
+               
+            </td>
+            <td style="min-width: 132px;">
+                @Html.ActionLink("Sửa", "Edit", new { id = item.MaSach }) |
+                @Html.ActionLink("Chi tiết", "Details", new { id = item.MaSach }) |
+                @Html.ActionLink("Xóa", "DeleteBook", new { id = item.MaSach })
+            </td>
+        </tr>
+    }
+</table>
+
+<!-- Hiển thị menu phân trang -->
+<div class="MenuTrang center-block">
+    @Html.PagedListPager(Model, page => Url.Action("BookManagement", new { page = page }))
+</div>
+
+<style>
+    .MenuTrang li {
+        display: inline;
+    }
+</style>

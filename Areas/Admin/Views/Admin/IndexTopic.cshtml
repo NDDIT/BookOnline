@@ -1,0 +1,45 @@
+﻿@model IEnumerable<NguyenDuyDuong.SachOnline.Models.CHUDE>
+@using PagedList.Mvc;
+
+@{
+    ViewBag.Title = "Index Topic";
+    Layout = "~/Views/Shared/LayoutAdmin.cshtml";
+}
+
+<div style="margin-bottom: 15px;">
+    @Html.ActionLink("<< Về Trang quản trị", "Statistics", "Admin")
+</div>
+
+<h2 style="text-align: center;">QUẢN LÝ CHỦ ĐỀ</h2>
+
+<p>
+    @Html.ActionLink("THÊM MỚI", "CreateTopic")
+</p>
+<table class="table">
+    <tr>
+        <th>
+            Mã chủ đề
+        </th>
+        <th>
+            Tên chủ đề
+        </th>
+        <th>
+        </th>
+    </tr>
+
+    @foreach (var item in Model)
+    {
+        <tr>
+            <td>
+                @Html.DisplayFor(modelItem => item.MaCD)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.TenChuDe)
+            </td>
+            <td style="min-width: 132px;">
+                @Html.ActionLink("Sửa", "EditTopic", new { id = item.MaCD }) |
+                @Html.ActionLink("Xóa", "DeleteTopic", new { id = item.MaCD })
+            </td>
+        </tr>
+    }
+</table>
