@@ -1,15 +1,18 @@
 # BookOnline
 📌 Overview
+
 IBook is a sample web application developed using ASP.NET MVC 5 and Entity Framework. It serves as a step-by-step guide for building a complete online bookstore, covering both frontend and backend development.
 hiepsiit.com
 
 🎯 Objectives
+
 Develop a book-selling web application using the MVC 5 architecture and Entity Framework.
 
 Utilize development tools such as Visual Studio 2013 and SQL Server (2005/2008/2012).
 
 
 🧩 Project Structure
+
 The project is divided into three main parts:
 
 Database and Layout Design: Designing the database schema and the website's layout.
@@ -20,6 +23,7 @@ Admin Functionality Development: Creating administrative features for managing t
 hiepsiit.com
 
 👥 User Features
+
 Home Page: Displays the top 5 best-selling books.
 
 Product Page: Allows browsing books by category.
@@ -42,6 +46,7 @@ User Management: Manage user accounts and permissions.
 
 
 🗃️ Database Design
+
 ER Model: The database is designed to handle book information, categories, publishers, users, and orders.
 
 Implementation: Utilizes SQL Server for data storage and management.
@@ -50,10 +55,7 @@ Implementation: Utilizes SQL Server for data storage and management.
 Responsive Design: The website layout is built using free templates with Bootstrap, ensuring compatibility across devices.
 
 User Interface: Clean and intuitive design for both users and administrators.
-hiepsiit.com
-+1
-hiepsiit.com
-+1
+
 
 🚀 Getting Started
 To set up the project locally:
