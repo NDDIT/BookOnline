@@ -50,11 +50,24 @@ User Management: Manage user accounts and permissions.
 ER Model: The database is designed to handle book information, categories, publishers, users, and orders.
 
 Implementation: Utilizes SQL Server for data storage and management.
+![image](https://github.com/user-attachments/assets/ea190ea7-ec8d-490f-aac7-39a4b1831ddc)
+![image](https://github.com/user-attachments/assets/8a81681f-73c1-4f90-9860-747a81ed6781)
+
 
 🎨 Layout and Design
 Responsive Design: The website layout is built using free templates with Bootstrap, ensuring compatibility across devices.
+![image](https://github.com/user-attachments/assets/ba1f26c3-41c8-4b63-9c8c-7847f35d2483)
+![image](https://github.com/user-attachments/assets/492b9f51-3b83-4bac-97b0-2baa3310ae5a)
+![image](https://github.com/user-attachments/assets/ab3d96bc-923d-461d-9fda-43dec37f07b1)
+![image](https://github.com/user-attachments/assets/a9ac9650-129d-49ba-a37e-f3894ac52165)
+![image](https://github.com/user-attachments/assets/42035b5f-21f0-43a5-bcc9-112473f1f53c)
+![image](https://github.com/user-attachments/assets/58cf6ad5-ffc1-4f0d-9836-67f320298b35)
 
 User Interface: Clean and intuitive design for both users and administrators.
+![image](https://github.com/user-attachments/assets/4bc00e84-a14f-4bd5-baee-406ee2ba35b4)
+![image](https://github.com/user-attachments/assets/456cfbe6-4c88-4059-b181-0f88e38e775a)
+![image](https://github.com/user-attachments/assets/0eb218ee-b48e-4aab-9641-3c83112c0c2f)
+![image](https://github.com/user-attachments/assets/97c595c5-1016-4958-beba-63d814a0c592)
 
 
 🚀 Getting Started
